@@ -131,14 +131,14 @@ pm.execute_notebook(
 
         TOP_K_RULES=200,
         SORT_RULES_BY="lift",
-        WEIGHTING="lift",
+        WEIGHTING="none",
         MIN_ANTECEDENT_LEN=1,
-        USE_RFM=True,
+        USE_RFM=False,
         RFM_SCALE=True,
         RULE_SCALE=False,
 
         K_MIN=2,
-        K_MAX=10,
+        K_MAX=12,
         N_CLUSTERS=None,
         RANDOM_STATE=42,
 
