@@ -132,14 +132,14 @@ pm.execute_notebook(
         TOP_K_RULES=200,
         SORT_RULES_BY="lift",
         WEIGHTING="lift",
-        MIN_ANTECEDENT_LEN=1,
+        MIN_ANTECEDENT_LEN=2,
         USE_RFM=True,
         RFM_SCALE=True,
-        RULE_SCALE=False,
+        RULE_SCALE=True,
 
         K_MIN=2,
-        K_MAX=10,
-        N_CLUSTERS=None,
+        K_MAX=12,
+        N_CLUSTERS=3,
         RANDOM_STATE=42,
 
         OUTPUT_CLUSTER_PATH="data/processed/customer_clusters_from_rules.csv",

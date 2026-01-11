@@ -1427,7 +1427,7 @@ class RuleBasedCustomerClusterer:
     def build_final_features(
         self,
         weighting: str = "none",
-        use_rfm: bool = True,
+        use_rfm: bool = False,
         rfm_scale: bool = True,
         rule_scale: bool = False,
         min_antecedent_len: int = 1,
@@ -1470,7 +1470,7 @@ class RuleBasedCustomerClusterer:
     def choose_k_by_silhouette(
         X: np.ndarray,
         k_min: int = 2,
-        k_max: int = 10,
+        k_max: int = 12,
         random_state: int = 42,
     ) -> pd.DataFrame:
         """Chọn k dựa trên silhouette score."""
