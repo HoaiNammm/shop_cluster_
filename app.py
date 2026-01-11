@@ -6,144 +6,205 @@ import os
 
 # --- CẤU HÌNH TRANG ---
 st.set_page_config(
-    page_title="Customer Persona Dashboard",
-    page_icon="📊",
+    page_title="Hệ thống Insight Persona & Basket Analytics 2.0",
+    page_icon="🏆",
     layout="wide"
 )
 
+# Custom CSS để giao diện chuyên nghiệp hơn
+st.markdown("""
+    <style>
+    .main { background-color: #f9fbff; }
+    .stMetric { 
+        background-color: #ffffff; 
+        padding: 20px; 
+        border-radius: 15px; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid #e1e8f0;
+    }
+    .stTabs [data-baseweb="tab-list"] { gap: 30px; }
+    .stTabs [data-baseweb="tab"] {
+        height: 60px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .highlight-card {
+        padding: 1.5rem;
+        border-radius: 10px;
+        border-left: 5px solid #007bff;
+        background-color: #ffffff;
+        margin: 10px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 # --- 1. HÀM LOAD DỮ LIỆU ---
 @st.cache_data
-def load_data():
-    # Kiểm tra file tồn tại trước khi load
-    cluster_path = "data/processed/customer_clusters_from_rules.csv"
-    rules_path = "data/processed/rules_apriori_filtered.csv"
-    
-    if not os.path.exists(cluster_path):
-        st.error(f"Không tìm thấy file: {cluster_path}. Hãy chạy Notebook để lưu file trước!")
-        return None, None
-        
-    df = pd.read_csv(cluster_path)
-    rules = pd.read_csv(rules_path) if os.path.exists(rules_path) else pd.DataFrame()
-    return df, rules
+def load_all_data():
+    df_cust = pd.read_csv("/hdd3/namdh/datamining/shop_cluster_/data/processed/customer_clusters_from_rules.csv")
+    if os.path.exists("/hdd3/namdh/datamining/shop_cluster_/data/processed/rules_with_basket_groups.csv"):
+        df_rules = pd.read_csv("/hdd3/namdh/datamining/shop_cluster_/data/processed/rules_with_basket_groups.csv")
+        has_bg = True
+    else:
+        df_rules = pd.read_csv("rules_apriori_filtered.csv")
+        has_bg = False
+    return df_cust, df_rules, has_bg
 
-df, rules = load_data()
+df, rules, has_bg = load_all_data()
 
-# Dừng app nếu không có dữ liệu
-if df is None:
-    st.stop()
-
-# --- 2. ĐỊNH NGHĨA PERSONA ---
-# (Phù hợp với kết quả Biến thể 2 của bạn)
-persona_info = {
+# --- 2. LOGIC PERSONA & INSIGHT CHI TIẾT ---
+persona_config = {
     0: {
-        "name": "Standard/At-Risk Customers (Phổ thông/Rủi ro)",
-        "emoji": "🏠",
-        "color": "#636EFA",
-        "desc": "Nhóm khách hàng có chi tiêu thấp hoặc đã lâu chưa quay lại mua sắm.",
-        "action": "Gửi mã giảm giá 'Nhớ bạn' (Retention) hoặc gợi ý các sản phẩm giá rẻ để kích cầu."
+        "vn": "Khách Phổ thông / Rủi ro", 
+        "icon": "📉", "color": "#636EFA", 
+        "insight": "Chi phí để có được (CAC) nhóm này rất lớn nhưng giá trị thu hồi lại thấp. Tỷ lệ rời bỏ (Churn) đang ở mức báo động.",
+        "strategy": "Sử dụng Automation Marketing. Tặng mã Voucher giảm giá sâu hoặc Freeship cho đơn hàng tiếp theo để \"đánh thức\" họ quay lại, mục tiêu là đưa Recency về mức dưới 30 ngày."
     },
     1: {
-        "name": "High-Value Regulars (Khách quen giá trị cao)",
-        "emoji": "🌟",
-        "color": "#00CC96",
-        "desc": "Khách hàng mua sắm ổn định, giá trị đơn hàng cao hơn mức trung bình.",
-        "action": "Tặng điểm thưởng X2 cho các đơn hàng tiếp theo, đề xuất combo (Bundle) sản phẩm."
+        "vn": "Khách Quen Giá Trị Cao", 
+        "icon": "⭐", "color": "#00CC96", 
+        "insight": "Đây là nhóm có lòng trung thành cao nhưng đang bị \"nguội lạnh\". Họ cần một lý do để quay lại thường xuyên hơn.",
+        "strategy": "Tận dụng kết quả từ Basket Clustering để cá nhân hóa gợi ý. Nếu họ đã mua món A, hãy gửi thông báo về món B thuộc cùng nhóm ngành hàng ngay tại thời điểm ngày thứ 30 (trước khi họ chạm ngưỡng 61 ngày)."
     },
     2: {
-        "name": "Super VIP Champions (Cá voi ưu tú)",
-        "emoji": "💎",
-        "color": "#EF553B",
-        "desc": "Nhóm khách hàng cực kỳ quan trọng, chi tiêu khổng lồ và tần suất mua sắm hàng ngày.",
-        "action": "Chăm sóc đặc quyền 1-1, tặng quà tri ân riêng biệt và mời tham gia sự kiện VIP."
+        "vn": "Siêu VIP / Đối tác chiến lược", 
+        "icon": "🏆", "color": "#EF553B", 
+        "insight": "Sự ổn định của toàn bộ doanh nghiệp phụ thuộc vào sự hài lòng của nhóm này. Một biến động nhỏ trong hành vi của \"Whale\" sẽ gây sụt giảm doanh thu nghiêm trọng hơn hàng ngàn khách hàng nhỏ lẻ cộng lại.",
+        "strategy": "Áp dụng cơ chế Key Account Management (KAM). Cần sự can thiệp trực tiếp từ cấp quản lý để duy trì mối quan hệ 1-1, ưu tiên tồn kho và cung cấp các giải pháp logistics riêng biệt thay vì các chương trình khuyến mãi đại trà."
     }
 }
 
-# --- SIDEBAR ---
-st.sidebar.header("⚙️ Cấu hình Dashboard")
-cluster_id = st.sidebar.selectbox(
-    "Chọn Nhóm Persona:", 
-    options=sorted(df['cluster'].unique()),
-    format_func=lambda x: f"Cụm {x}: {persona_info[x]['name']}" if x in persona_info else f"Cụm {x}"
-)
+# --- 3. SIDEBAR ---
+with st.sidebar:
+    st.image("https://cdn-icons-png.flaticon.com/512/3126/3126647.png", width=80)
+    st.title("Elite CRM Analytics")
+    
+    st.header("🔬 So sánh Mô hình")
+    algo_choice = st.radio("Chọn Mô hình:", ["K-Means", "Agglomerative"])
+    target_col = 'cluster' if algo_choice == "K-Means" else 'cluster_agg'
+    
+    st.divider()
+    
+    st.header("👤 Phân khúc Khách hàng")
+    cluster_id = st.selectbox("Chọn Persona:", options=sorted(df[target_col].unique()),
+                              format_func=lambda x: f"Cụm {x}: {persona_config.get(x, {}).get('vn', 'N/A')}")
+    
+c_data = df[df[target_col] == cluster_id]
+p_data = persona_config.get(cluster_id, persona_config[0])
 
-# Lấy dữ liệu của cụm đang chọn
-c_data = df[df['cluster'] == cluster_id]
-current_persona = persona_info.get(cluster_id, persona_info[0])
+# --- 4. GIAO DIỆN CHÍNH ---
+st.title(f"{p_data['icon']} Persona: {p_data['vn']} ({algo_choice})")
 
-# --- GIAO DIỆN CHÍNH ---
-st.title(f"{current_persona['emoji']} Phân tích Persona: {current_persona['name']}")
-st.markdown(f"**Mô tả chân dung:** {current_persona['desc']}")
-
-# Hiển thị các Metric chính
-m_col1, m_col2, m_col3, m_col4 = st.columns(4)
-with m_col1:
-    st.metric("Tổng số khách", f"{len(c_data):,}")
-with m_col2:
-    st.metric("Recency TB", f"{c_data['Recency'].mean():.1f} ngày", delta_color="inverse")
-with m_col3:
-    st.metric("Frequency TB", f"{c_data['Frequency'].mean():.1f} lần")
-with m_col4:
-    st.metric("Monetary TB", f"£{c_data['Monetary'].mean():,.0f}")
+m1, m2, m3, m4 = st.columns(4)
+m1.metric("Số lượng Khách", f"{len(c_data):,}")
+m2.metric("Doanh thu TB", f"£{c_data['Monetary'].mean():,.0f}")
+m3.metric("Tần suất TB", f"{c_data['Frequency'].mean():.1f} lần")
+m4.metric("Recency TB", f"{c_data['Recency'].mean():.1f} ngày")
 
 st.divider()
 
-# --- CÁC TAB CHỨC NĂNG ---
-tab1, tab2, tab3 = st.tabs(["📊 Trực quan hóa & Phân tách", "💡 Chiến lược Marketing", "📋 Danh sách khách hàng"])
+# --- 5. CÁC TABS PHÂN TÍCH ---
+tab_persona, tab_basket, tab_benchmark = st.tabs([
+    "👤 PHÂN TÍCH PERSONA", 
+    "📦 HỆ SINH THÁI GIỎ HÀNG", 
+    "🔬 BENCHMARK CHIẾN LƯỢC"
+])
 
-with tab1:
-    col_left, col_right = st.columns([2, 1])
+# --- TAB 1: PHÂN TÍCH PERSONA ---
+with tab_persona:
+    st.subheader("🎯 Đặc điểm Hành vi & Định hướng Chăm sóc")
+    col1, col2 = st.columns([2, 1])
     
-    with col_left:
-        st.subheader("Vị trí khách hàng trên bản đồ hành vi (PCA)")
-        # Kiểm tra xem có cột Component không
-        if 'Component 1' in df.columns and 'Component 2' in df.columns:
-            fig_pca = px.scatter(
-                df, x='Component 1', y='Component 2', 
-                color='cluster',
-                color_continuous_scale=px.colors.qualitative.Plotly,
-                hover_data=['CustomerID', 'Monetary'],
-                title="Phân bố các cụm dựa trên Rules + RFM"
-            )
-            # Highlight cụm đang chọn bằng cách làm mờ các cụm khác (tùy chọn)
-            st.plotly_chart(fig_pca, use_container_width=True)
-        else:
-            st.warning("Thiếu cột 'Component 1/2'. Hãy chạy lại Notebook và lưu đầy đủ cột.")
-
-    with col_right:
-        st.subheader("So sánh với Trung bình")
-        avg_all = df[['Recency', 'Frequency', 'Monetary']].mean()
-        avg_cluster = c_data[['Recency', 'Frequency', 'Monetary']].mean()
-        
-        comp_df = pd.DataFrame({
-            "Chỉ số": ["Recency", "Frequency", "Monetary"],
-            "Toàn sàn": avg_all.values,
-            "Cụm này": avg_cluster.values
-        }).melt(id_vars="Chỉ số")
-        
-        fig_comp = px.bar(comp_df, x="Chỉ số", y="value", color="variable", barmode="group",
-                          labels={"value": "Giá trị", "variable": "Nhóm"})
-        st.plotly_chart(fig_comp, use_container_width=True)
-
-with tab2:
-    st.subheader("🎯 Hành động đề xuất")
-    st.success(f"**Chiến lược:** {current_persona['action']}")
+    with col1:
+        fig_pca = px.scatter(df, x='Component 1', y='Component 2', color=target_col,
+                             color_discrete_map={0: "#636EFA", 1: "#00CC96", 2: "#EF553B"},
+                             title="Bản đồ Phân cụm (PCA Space)", template="plotly_white", height=500)
+        fig_pca.add_trace(go.Scatter(x=c_data['Component 1'], y=c_data['Component 2'], 
+                                     mode='markers', marker=dict(color='yellow', size=10, line=dict(width=1, color='Black')),
+                                     name="Vị trí cụm hiện tại"))
+        st.plotly_chart(fig_pca, use_container_width=True)
     
-    st.subheader("📦 Gợi ý Bundles (Dựa trên Association Rules)")
-    if not rules.empty:
-        st.write("Dưới đây là các luật kết hợp mạnh nhất có thể áp dụng cho nhóm này:")
-        st.dataframe(rules.head(10), use_container_width=True)
+    with col2:
+        st.markdown(f"#### 🧬 Insight cho Cụm {cluster_id}")
+        st.info(p_data['insight'])
+        st.success(f"**Chiến lược:**\n{p_data['strategy']}")
+        
+        st.markdown("---")
+        # Radar Chart
+        categories = ['Recency', 'Frequency', 'Monetary']
+        all_max = df[categories].max()
+        fig_radar = go.Figure()
+        fig_radar.add_trace(go.Scatterpolar(r=(df[categories].mean()/all_max), theta=categories, fill='toself', name='TB Chung'))
+        fig_radar.add_trace(go.Scatterpolar(r=(c_data[categories].mean()/all_max), theta=categories, fill='toself', name='Persona này', line_color=p_data['color']))
+        fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 1])), showlegend=True, height=350)
+        st.plotly_chart(fig_radar, use_container_width=True)
+
+# --- TAB 2: GIỎ HÀNG ---
+with tab_basket:
+    st.subheader("🧺 Phân tích sâu 5 Nhóm Hệ sinh thái Sản phẩm")
+    if has_bg:
+        bg_id = st.selectbox("Chọn Nhóm Giỏ hàng để phân tích sâu:", options=sorted(rules['basket_group'].unique()), 
+                             format_func=lambda x: f"Nhóm {x}")
+        
+        curr_rules = rules[rules['basket_group'] == bg_id].sort_values('lift', ascending=False)
+        
+        c1, c2 = st.columns([1.5, 1])
+        with c1:
+            st.write(f"**Top Quy luật trong Nhóm {bg_id}:**")
+            st.dataframe(curr_rules[['antecedents_str', 'consequents_str', 'lift', 'confidence']].head(10), use_container_width=True)
+        
+        with c2:
+            st.markdown("### 🔍 Phân tích Chiến thuật")
+            if bg_id in [0, 1]:
+                st.success("**NHÓM THẢO MỘC (HERB GARDEN)**")
+                st.write("- **Sản phẩm chính:** Rosemary, Thyme, Parsley, Basil, Chives.")
+                st.write("- **Insight:** Lift cực cao (~74). Khách hàng mua theo bộ sưu tập (Set).")
+                st.write("- **Hành động:** Bán Combo bộ 6 nhãn hoặc quà tặng kèm khi mua hạt giống thảo mộc.")
+            elif bg_id == 2:
+                st.warning("**NHÓM DECOR SCANDINAVIAN**")
+                st.write("- **Sản phẩm chính:** Wooden Heart, Star, Tree Christmas.")
+                st.write("- **Insight:** Mua theo Concept thẩm mỹ đồng bộ. Lift đạt ~35.")
+                st.write("- **Hành động:** Trưng bày theo chủ đề 'Giáng sinh gỗ' trên Website.")
+            elif bg_id == 3:
+                st.info("**NHÓM PHỤ KIỆN & HÀNG GỬI (ONLINE ACCS)**")
+                st.write("- **Sản phẩm chính:** Shoulder Bags (Suki, Skull), Jam Making Set, Postage.")
+                st.write("- **Insight:** Nhóm khách hàng sở thích cá nhân, thường mua Online.")
+                st.write("- **Hành động:** Gợi ý túi xách đi kèm khi khách mua các bộ dụng cụ thủ công.")
+            elif bg_id == 4:
+                st.error("**NHÓM LƯU TRỮ & LOGISTICS**")
+                st.write("- **Sản phẩm chính:** Jumbo Bags, Storage Bags, Dotcom Postage.")
+                st.write("- **Insight:** Khách mua sắm số lượng lớn, cần túi chứa và dịch vụ vận chuyển.")
+                st.write("- **Hành động:** Miễn phí túi Jumbo cho đơn hàng trên £100.")
     else:
-        st.info("Chưa có dữ liệu luật kết hợp.")
+        st.warning("Vui lòng chạy lại Notebook để tạo file rules_with_basket_groups.csv")
 
-with tab3:
-    st.subheader("🔍 Danh sách khách hàng chi tiết")
-    st.write(f"Hiển thị danh sách khách hàng thuộc cụm {cluster_id}")
-    st.dataframe(c_df_view := c_data[['CustomerID', 'Recency', 'Frequency', 'Monetary']].sort_values('Monetary', ascending=False), 
-                 use_container_width=True)
+# --- TAB 3: BENCHMARK ---
+with tab_benchmark:
+    st.subheader("🔬 Đánh giá Đối chứng & Hiệu quả (Mục 2.3)")
     
-    # Cho phép download kết quả cụm
-    csv = c_df_view.to_csv(index=False).encode('utf-8')
-    st.download_button("Tải danh sách (.csv)", data=csv, file_name=f"cluster_{cluster_id}_customers.csv", mime='text/csv')
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.markdown("#### 1. So sánh Thuật toán (Quantitative)")
+        metric_df = pd.DataFrame({
+            "Metric": ["Silhouette (Cao là tốt)", "DB Index (Thấp là tốt)", "Mức độ phân tách"],
+            "K-Means": ["0.873 (Win)", "0.287 (Win)", "Rất rõ ràng"],
+            "Agglomerative": ["0.870", "0.316", "Dễ bị nhiễu"]
+        })
+        st.table(metric_df)
+        
+    with col_b:
+        st.markdown("#### 2. So sánh Góc nhìn (Qualitative)")
+        view_df = pd.DataFrame({
+            "Tiêu chí": ["Góc nhìn Khách hàng", "Góc nhìn Giỏ hàng"],
+            "Trọng tâm": ["Con người (Who)", "Sản phẩm (What)"],
+            "Mục tiêu": ["Retention (Giữ chân)", "Cross-sell (Bán thêm)"],
+            "Giá trị": ["Quyết định ai là VIP", "Quyết định Combo nào tốt"]
+        })
+        st.table(view_df)
 
-st.sidebar.markdown("---")
-st.sidebar.info("Dashboard được xây dựng để hỗ trợ ra quyết định dựa trên dữ liệu Phân cụm và Luật kết hợp.")
+    st.success("**KẾT LUẬN:** Góc nhìn Khách hàng giúp quản trị CRM (Who), còn góc nhìn Giỏ hàng giúp tối ưu hóa Sales (What). Kết hợp cả hai là chìa khóa cho chiến lược Marketing 10 điểm.")
+
+# --- 6. XUẤT DỮ LIỆU ---
+with st.expander("📥 Xuất danh sách Khách hàng mục tiêu"):
+    st.dataframe(c_data[['CustomerID', 'Recency', 'Frequency', 'Monetary']].sort_values('Monetary', ascending=False))
