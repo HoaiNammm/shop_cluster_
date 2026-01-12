@@ -132,6 +132,7 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
 | 2 |	1 |	1.00 |	1,373.00 |	1,716,831 |
 
 - **Diễn giải cụm**
+  
    **Cluster 0 - Standard Mass – Khách Phổ thông rủi ro**
   - Persona: Khách vãng lai, chi tiêu thấp, Recency cao (93 ngày).
   - Chiến lược: Win-back Campaign - Tặng mã Freeship cho các món hàng từng xem để kích hoạt lại.
