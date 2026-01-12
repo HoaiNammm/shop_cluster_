@@ -149,7 +149,7 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
 
 - Dữ liệu được giảm chiều về 2D bằng PCA
 - Scatter plot thể hiện:
- 
+ <img src="[images/anh2.jpg](https://github.com/HoaiNammm/shop_cluster_/blob/main/data/picture/newplot%20(1).png)" width="80%">
   - Cluster 0 và 1 có vùng chồng lấn nhẹ
   - Cluster 2 tách biệt rõ ràng do hành vi cực đoan
 
