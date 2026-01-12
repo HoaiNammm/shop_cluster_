@@ -218,8 +218,8 @@ Cluster 1 nhỏ nhưng:
  - Thay vì loại bỏ outlier:
    - Tách riêng
    - Đối xử như B2B / Strategic Partner
- Đây là minh chứng rõ ràng rằng:
-Clustering tốt không phải là loại outlier, mà là hiểu outlier.
+ *Đây là minh chứng rõ ràng rằng:
+Clustering tốt không phải là loại outlier, mà là hiểu outlier.*
 
 ## 10. Chiến lược hành động Marketing cụ thể theo từng Cluster
 
@@ -230,16 +230,16 @@ Vấn đề chính
  - Giá trị đơn thấp
 
 **Chiến lược đề xuất**
-1. Win-back Campaign có điều kiện
+**1. Win-back Campaign có điều kiện**
  - Chỉ gửi ưu đãi nếu:
     - KH từng mua trong 90–180 ngày
  - Tránh spam nhóm inactive lâu
-2. Recommendation đơn giản
+**2. Recommendation đơn giản**
  - Không dùng luật Lift cao
  - Gợi ý:
     - Top sản phẩm bán chạy
     - Sản phẩm đã từng xem / mua
-3. Mục tiêu
+**3. Mục tiêu**
  - Kéo KH quay lại mua
  - Không kỳ vọng tăng AOV
 
@@ -251,14 +251,16 @@ Dấu hiệu nhận diện
 
 Chiến lược hành động (Highly Actionable)
 
-1. Bundle Strategy (Core)
+**1. Bundle Strategy (Core)**
  - Combo “Herb Starter Pack”
  - Combo “Mediterranean Herb Set”
 → Áp dụng đúng các antecedents trong luật
-2. Cross-sell có điều kiện
+
+**2. Cross-sell có điều kiện**
  - Nếu KH mua Parsley + Rosemary
-→ Gợi ý Thyme (Confidence ≈ 95%)
-3. Loyalty Program
+*→ Gợi ý Thyme (Confidence ≈ 95%)*
+
+**3. Loyalty Program**
  - Không giảm giá mạnh
  - Thưởng bằng:
    - Sản phẩm độc quyền
