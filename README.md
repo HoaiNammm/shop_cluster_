@@ -102,6 +102,7 @@ Biến thể này phản ánh sự xuất hiện của hành vi mua kèm, đóng
 Nhóm khảo sát K với Silhoutte score và thu được kết quả thực tế sau: 
 
 | **K** | **Silhouette** |
+| -- | ------------- |
 | 2 |	0.875162 |
 | 3 |	0.873354 |
 | 12 |	0.442162 |
@@ -124,7 +125,8 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
 
 ## 6. Kết quả phân cụm và Profiling
 
-**| Cluster |	Số khách hàng |	Recency |	Frequency	|  Monetary |**
+| Cluster |	Số khách hàng |	Recency |	Frequency	|  Monetary |
+| -- | ----------------- | ---------- | -------- | ---------- |
 | 0 |	3,797 |	93.22 |	4.05 |	1,809.82 |
 | 1 |	123 |	61.02 |	10.31 |	3,548.75 |
 | 2 |	1 |	1.00 |	1,373.00 |	1,716,831 |
