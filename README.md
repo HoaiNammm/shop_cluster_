@@ -230,6 +230,7 @@ Vấn đề chính
  - Giá trị đơn thấp
 
 **Chiến lược đề xuất**
+
 **1. Win-back Campaign có điều kiện**
  - Chỉ gửi ưu đãi nếu:
     - KH từng mua trong 90–180 ngày
