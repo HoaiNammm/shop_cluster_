@@ -132,15 +132,15 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
 | 2 |	1 |	1.00 |	1,373.00 |	1,716,831 |
 
 - **Diễn giải cụm**
-  - **Cluster 0 - Standard Mass – Khách Phổ thông rủi ro**
+   **Cluster 0 - Standard Mass – Khách Phổ thông rủi ro**
   - Persona: Khách vãng lai, chi tiêu thấp, Recency cao (93 ngày).
   - Chiến lược: Win-back Campaign - Tặng mã Freeship cho các món hàng từng xem để kích hoạt lại.
 
-  - **Cluster 1 - Herb Enthusiasts – Người yêu Thảo mộc**
+   **Cluster 1 - Herb Enthusiasts – Người yêu Thảo mộc**
   - Persona: Persona: Khách trung thành, luôn mua theo bộ sưu tập làm vườn (Lift 74.5).
   - Chiến lược: Bundle Strategy - Đóng gói trọn bộ 6 nhãn thảo mộc hoặc tặng kèm hạt giống khi mua combo.
 
-  - **Cluster 2 - Cluster 2 – Strategic Whale – Đối tác Chiến lược**
+   **Cluster 2 - Cluster 2 – Strategic Whale – Đối tác Chiến lược**
   - Persona: Khách sỉ cực lớn, mua hàng hàng ngày.
   - Chiến lược: Chăm sóc đặc quyền 1-1, chiết khấu sỉ theo bậc thang đơn hàng.
  
