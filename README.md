@@ -141,3 +141,14 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
   - **Cluster 2 - Cluster 2 – Strategic Whale – Đối tác Chiến lược**
   - Persona: Khách sỉ cực lớn, mua hàng hàng ngày.
   - Chiến lược: Chăm sóc đặc quyền 1-1, chiết khấu sỉ theo bậc thang đơn hàng.
+ 
+## 7. Trực quan hóa cụm
+
+
+## 8. So sánh các biến thể đặc trưng
+**| Biến thể | Nhận xét |**
+| Rule-only | Phản ánh hành vi mua kèm nhưng thiếu thông tin giá trị |
+| Rule + RFM | Cụm rõ ràng hơn, dễ diễn giải hơn cho marketing |
+| Top-K nhỏ | Thiếu thông tin hành vi |
+| Top-K = 200 | Cân bằng tốt giữa độ chi tiết và độ ổn định |
+
