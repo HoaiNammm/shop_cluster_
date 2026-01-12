@@ -235,11 +235,13 @@ Vấn đề chính
  - Chỉ gửi ưu đãi nếu:
     - KH từng mua trong 90–180 ngày
  - Tránh spam nhóm inactive lâu
+
 **2. Recommendation đơn giản**
  - Không dùng luật Lift cao
  - Gợi ý:
     - Top sản phẩm bán chạy
     - Sản phẩm đã từng xem / mua
+   
 **3. Mục tiêu**
  - Kéo KH quay lại mua
  - Không kỳ vọng tăng AOV
