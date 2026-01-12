@@ -153,6 +153,7 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
   - Cluster 0 và 1 có vùng chồng lấn nhẹ
   - Cluster 2 tách biệt rõ ràng do hành vi cực đoan
  <img src="https://github.com/HoaiNammm/shop_cluster_/blob/main/data/picture/newplot%20(1).png" width="80%">
+ 
  **Nhận xét:**
 
 - Recency của persona này cao hơn mức trung bình, cho thấy nhóm khách hàng này có xu hướng mua sắm gần đây hơn so với mặt bằng chung.
@@ -163,6 +164,7 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
 
 - Tổng thể, hình dạng radar của persona khá nhỏ, cho thấy đây là nhóm khách hàng tiềm năng, chưa phải nhóm trung thành hay giá trị cao.
  <img src="https://github.com/HoaiNammm/shop_cluster_/blob/main/data/picture/newplot.png" width="80%">
+ 
 **Nhận xét:**
 
 Dữ liệu được chia thành 3 cụm rõ ràng:
