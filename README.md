@@ -146,7 +146,7 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
 
 
 ## 8. So sánh các biến thể đặc trưng
-**| Biến thể | Nhận xét |**
+| Biến thể | Nhận xét |
 | Rule-only | Phản ánh hành vi mua kèm nhưng thiếu thông tin giá trị |
 | Rule + RFM | Cụm rõ ràng hơn, dễ diễn giải hơn cho marketing |
 | Top-K nhỏ | Thiếu thông tin hành vi |
