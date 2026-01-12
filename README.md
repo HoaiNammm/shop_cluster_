@@ -177,7 +177,7 @@ Vị trí persona hiện tại nằm gần cluster 0, cho thấy persona này th
 
 - Khách hàng phổ biến
 - Chưa có nhiều đặc điểm nổi trội so với các cụm còn lại.
-
+ 
 ## 8. So sánh các biến thể đặc trưng
 | Biến thể | Nhận xét |
 | ----- | ----------------------------------------- |
