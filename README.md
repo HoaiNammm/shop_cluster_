@@ -150,8 +150,8 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
 - Dữ liệu được giảm chiều về 2D bằng PCA
 - Scatter plot thể hiện:
  
- - Cluster 0 và 1 có vùng chồng lấn nhẹ
- - Cluster 2 tách biệt rõ ràng do hành vi cực đoan
+  - Cluster 0 và 1 có vùng chồng lấn nhẹ
+  - Cluster 2 tách biệt rõ ràng do hành vi cực đoan
 
 ## 8. So sánh các biến thể đặc trưng
 | Biến thể | Nhận xét |
