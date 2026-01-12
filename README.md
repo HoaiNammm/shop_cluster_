@@ -202,22 +202,22 @@ Vị trí persona hiện tại nằm gần cluster 0, cho thấy persona này th
 | Lift kích hoạt | Thấp | Rất cao (74+) |
 
 Cluster 1 nhỏ nhưng:
-- Mua thường xuyên
-- Mua theo bộ logic (basket coherence)
-- Có sở thích nhất quán
+ - Mua thường xuyên
+ - Mua theo bộ logic (basket coherence)
+ - Có sở thích nhất quán
 
  - **Insight chiến lược:**
    - Doanh thu tăng không đến từ việc săn thêm khách mới,
    - mà đến từ khai thác sâu đúng nhóm nhỏ này.
 
 **Insight 3: Cluster 2 không phải “lỗi” — mà là khách hàng chiến lược**
-- 1 khách hàng
-- Monetary > 1.7 triệu
--  Frequency > 1,300 giao dịch
+ - 1 khách hàng
+ - Monetary > 1.7 triệu
+ -  Frequency > 1,300 giao dịch
 
-- Thay vì loại bỏ outlier:
-  - Tách riêng
-  - Đối xử như B2B / Strategic Partner
+ - Thay vì loại bỏ outlier:
+   - Tách riêng
+   - Đối xử như B2B / Strategic Partner
  Đây là minh chứng rõ ràng rằng:
 Clustering tốt không phải là loại outlier, mà là hiểu outlier.
 
@@ -225,55 +225,49 @@ Clustering tốt không phải là loại outlier, mà là hiểu outlier.
 
 **Cluster 0 – Standard Mass / At-Risk Customers**
 Vấn đề chính
-- Recency cao → sắp “nguội”
-- Không có pattern mua kèm rõ ràng
-- Giá trị đơn thấp
+ - Recency cao → sắp “nguội”
+ - Không có pattern mua kèm rõ ràng
+ - Giá trị đơn thấp
 
 **Chiến lược đề xuất**
 1. Win-back Campaign có điều kiện
-- Chỉ gửi ưu đãi nếu:
-   - KH từng mua trong 90–180 ngày
-- Tránh spam nhóm inactive lâu
-
+ - Chỉ gửi ưu đãi nếu:
+    - KH từng mua trong 90–180 ngày
+ - Tránh spam nhóm inactive lâu
 2. Recommendation đơn giản
-- Không dùng luật Lift cao
-- Gợi ý:
-   - Top sản phẩm bán chạy
-   - Sản phẩm đã từng xem / mua
-
+ - Không dùng luật Lift cao
+ - Gợi ý:
+    - Top sản phẩm bán chạy
+    - Sản phẩm đã từng xem / mua
 3. Mục tiêu
-- Kéo KH quay lại mua
-- Không kỳ vọng tăng AOV
+ - Kéo KH quay lại mua
+ - Không kỳ vọng tăng AOV
 
 **Cluster 1 – Herb Enthusiasts / Niche Loyalists**
-
 Dấu hiệu nhận diện
-- Kích hoạt mạnh các luật:
-  - Parsley ↔ Rosemary ↔ Thyme ↔ Basil
-- Mua theo logic bộ sưu tập
+ - Kích hoạt mạnh các luật:
+   - Parsley ↔ Rosemary ↔ Thyme ↔ Basil
+ - Mua theo logic bộ sưu tập
 
 Chiến lược hành động (Highly Actionable)
 
 1. Bundle Strategy (Core)
-- Combo “Herb Starter Pack”
-- Combo “Mediterranean Herb Set”
-
+ - Combo “Herb Starter Pack”
+ - Combo “Mediterranean Herb Set”
 → Áp dụng đúng các antecedents trong luật
-
 2. Cross-sell có điều kiện
-- Nếu KH mua Parsley + Rosemary
+ - Nếu KH mua Parsley + Rosemary
 → Gợi ý Thyme (Confidence ≈ 95%)
-
 3. Loyalty Program
-- Không giảm giá mạnh
-- Thưởng bằng:
-  - Sản phẩm độc quyền
-  - Quà tặng liên quan sở thích
+ - Không giảm giá mạnh
+ - Thưởng bằng:
+   - Sản phẩm độc quyền
+   - Quà tặng liên quan sở thích
 
  **Cluster 2 – Strategic Whale**
  Chiến lược bắt buộc
-- KHÔNG dùng automation đại trà
-- Không upsell bằng recommendation system
+ - KHÔNG dùng automation đại trà
+ - Không upsell bằng recommendation system
 
 Hành động đề xuất
 - Account Manager riêng
