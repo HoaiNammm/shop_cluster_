@@ -102,6 +102,7 @@ Biến thể này phản ánh sự xuất hiện của hành vi mua kèm, đóng
 Nhóm khảo sát K với Silhoutte score và thu được kết quả thực tế sau: 
 
 | **K** | **Silhouette** |
+| -- | ------------- |
 | 2 |	0.875162 |
 | 3 |	0.873354 |
 | 12 |	0.442162 |
@@ -124,20 +125,158 @@ Nhóm khảo sát K với Silhoutte score và thu được kết quả thực t�
 
 ## 6. Kết quả phân cụm và Profiling
 
-**| Cluster |	Số khách hàng |	Recency |	Frequency	|  Monetary |**
+| Cluster |	Số khách hàng |	Recency |	Frequency	|  Monetary |
+| -- | ----------------- | ---------- | -------- | ---------- |
 | 0 |	3,797 |	93.22 |	4.05 |	1,809.82 |
 | 1 |	123 |	61.02 |	10.31 |	3,548.75 |
 | 2 |	1 |	1.00 |	1,373.00 |	1,716,831 |
 
 - **Diễn giải cụm**
-  - **Cluster 0 - Standard Mass – Khách Phổ thông rủi ro**
+  
+   **Cluster 0 - Standard Mass – Khách Phổ thông rủi ro**
   - Persona: Khách vãng lai, chi tiêu thấp, Recency cao (93 ngày).
   - Chiến lược: Win-back Campaign - Tặng mã Freeship cho các món hàng từng xem để kích hoạt lại.
 
-  - **Cluster 1 - Herb Enthusiasts – Người yêu Thảo mộc**
+   **Cluster 1 - Herb Enthusiasts – Người yêu Thảo mộc**
   - Persona: Persona: Khách trung thành, luôn mua theo bộ sưu tập làm vườn (Lift 74.5).
   - Chiến lược: Bundle Strategy - Đóng gói trọn bộ 6 nhãn thảo mộc hoặc tặng kèm hạt giống khi mua combo.
 
-  - **Cluster 2 - Cluster 2 – Strategic Whale – Đối tác Chiến lược**
+   **Cluster 2 - Cluster 2 – Strategic Whale – Đối tác Chiến lược**
   - Persona: Khách sỉ cực lớn, mua hàng hàng ngày.
   - Chiến lược: Chăm sóc đặc quyền 1-1, chiết khấu sỉ theo bậc thang đơn hàng.
+ 
+## 7. Trực quan hóa cụm
+
+- Dữ liệu được giảm chiều về 2D bằng PCA
+- Scatter plot thể hiện:
+ 
+  - Cluster 0 và 1 có vùng chồng lấn nhẹ
+  - Cluster 2 tách biệt rõ ràng do hành vi cực đoan
+ <img src="https://github.com/HoaiNammm/shop_cluster_/blob/main/data/picture/newplot%20(1).png" width="80%">
+ 
+ **Nhận xét:**
+
+- Recency của persona này cao hơn mức trung bình, cho thấy nhóm khách hàng này có xu hướng mua sắm gần đây hơn so với mặt bằng chung.
+- Frequency và Monetary của persona này xấp xỉ hoặc thấp hơn TB chung, cho thấy:
+
+  - Tần suất mua chưa cao
+  - Giá trị chi tiêu chưa nổi bật
+
+- Tổng thể, hình dạng radar của persona khá nhỏ, cho thấy đây là nhóm khách hàng tiềm năng, chưa phải nhóm trung thành hay giá trị cao.
+ <img src="https://github.com/HoaiNammm/shop_cluster_/blob/main/data/picture/newplot.png" width="80%">
+ 
+**Nhận xét:**
+
+Dữ liệu được chia thành 3 cụm rõ ràng:
+
+- Cluster 0: tập trung gần gốc tọa độ → nhóm khách hàng phổ thông, giá trị thấp.
+- Cluster 1: nằm tách biệt về phía phải → nhóm có đặc điểm khác biệt rõ ràng (có thể là chi tiêu hoặc tần suất cao).
+- Cluster 2: phân bố xa hơn, ít điểm → nhóm đặc biệt, có thể là khách hàng giá trị cao hoặc hành vi bất thường.
+
+Vị trí persona hiện tại nằm gần cluster 0, cho thấy persona này thuộc nhóm:
+
+- Khách hàng phổ biến
+- Chưa có nhiều đặc điểm nổi trội so với các cụm còn lại.
+
+## 8. So sánh các biến thể đặc trưng
+| Biến thể | Nhận xét |
+| ----- | ----------------------------------------- |
+| Rule-only | Phản ánh hành vi mua kèm nhưng thiếu thông tin giá trị |
+| Rule + RFM | Cụm rõ ràng hơn, dễ diễn giải hơn cho marketing |
+| Top-K nhỏ | Thiếu thông tin hành vi |
+| Top-K = 200 | Cân bằng tốt giữa độ chi tiết và độ ổn định |
+
+## 9. Business Insights rút ra từ Dual-Clustering & Association Rules
+
+**Insight 1: Luật Lift cao không dành cho số đông — mà dành cho đúng người**
+
+- Các luật có Lift ≈ 74 (HERB MARKER group) chỉ kích hoạt mạnh ở Cluster 1
+- Cluster 0 gần như không phản ứng với các luật này
+
+**Insight 2: Cluster 1 là “Hidden Gold Mine” chứ không phải nhóm lớn**
+| Chỉ Số | Cluster 0 | Cluster 1 |
+| -- | -------- | -------- |
+| Tỷ lệ KH | 96,8% | 3,1% |
+| Frequency | 4.05 | 10.31 |
+| Monetary | 1,809 | 3,548 |
+| Lift kích hoạt | Thấp | Rất cao (74+) |
+
+Cluster 1 nhỏ nhưng:
+ - Mua thường xuyên
+ - Mua theo bộ logic (basket coherence)
+ - Có sở thích nhất quán
+
+ - **Insight chiến lược:**
+   - Doanh thu tăng không đến từ việc săn thêm khách mới,
+   - mà đến từ khai thác sâu đúng nhóm nhỏ này.
+
+**Insight 3: Cluster 2 không phải “lỗi” — mà là khách hàng chiến lược**
+ - 1 khách hàng
+ - Monetary > 1.7 triệu
+ -  Frequency > 1,300 giao dịch
+
+ - Thay vì loại bỏ outlier:
+   - Tách riêng
+   - Đối xử như B2B / Strategic Partner
+ *Đây là minh chứng rõ ràng rằng:
+Clustering tốt không phải là loại outlier, mà là hiểu outlier.*
+
+## 10. Chiến lược hành động Marketing cụ thể theo từng Cluster
+
+**Cluster 0 – Standard Mass / At-Risk Customers**
+Vấn đề chính
+ - Recency cao → sắp “nguội”
+ - Không có pattern mua kèm rõ ràng
+ - Giá trị đơn thấp
+
+**Chiến lược đề xuất**
+
+**1. Win-back Campaign có điều kiện**
+ - Chỉ gửi ưu đãi nếu:
+    - KH từng mua trong 90–180 ngày
+ - Tránh spam nhóm inactive lâu
+
+**2. Recommendation đơn giản**
+ - Không dùng luật Lift cao
+ - Gợi ý:
+    - Top sản phẩm bán chạy
+    - Sản phẩm đã từng xem / mua
+   
+**3. Mục tiêu**
+ - Kéo KH quay lại mua
+ - Không kỳ vọng tăng AOV
+
+**Cluster 1 – Herb Enthusiasts / Niche Loyalists**
+Dấu hiệu nhận diện
+ - Kích hoạt mạnh các luật:
+   - Parsley ↔ Rosemary ↔ Thyme ↔ Basil
+ - Mua theo logic bộ sưu tập
+
+Chiến lược hành động (Highly Actionable)
+
+**1. Bundle Strategy (Core)**
+ - Combo “Herb Starter Pack”
+ - Combo “Mediterranean Herb Set”
+→ Áp dụng đúng các antecedents trong luật
+
+**2. Cross-sell có điều kiện**
+ - Nếu KH mua Parsley + Rosemary
+*→ Gợi ý Thyme (Confidence ≈ 95%)*
+
+**3. Loyalty Program**
+ - Không giảm giá mạnh
+ - Thưởng bằng:
+   - Sản phẩm độc quyền
+   - Quà tặng liên quan sở thích
+
+ **Cluster 2 – Strategic Whale**
+ Chiến lược bắt buộc
+ - KHÔNG dùng automation đại trà
+ - Không upsell bằng recommendation system
+
+Hành động đề xuất
+- Account Manager riêng
+- Chiết khấu theo volume
+- Ưu tiên tồn kho & giao hàng
+
+Đây là quan hệ đối tác, không phải khách lẻ.
